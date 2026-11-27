@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bollywood Icons CNN Classifier</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <i class="fa-solid fa-film ball-icon"></i>
+                <div class="logo-text">
+                    <h1>THE STAR STUDIO</h1>
+                    <p>BOLLYWOOD ICON RECOGNITION</p>
+                </div>
+            </div>
+            <div class="header-tag">
+                <span class="tag-accent">TensorFlow 2.x</span>
+                <span class="tag-badge" id="model-status-badge">Model Untrained</span>
+            </div>
+        </header>
+
+        <!-- Main Grid Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Dataset Manager & Hyperparams -->
+            <section class="left-panel dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-images icon-blue"></i> Dataset Manager</h2>
+                    <button class="btn btn-primary" id="btn-download-dataset">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Collect Celebrity Images
+                    </button>
+                </div>
+                
+                <p class="section-desc">Download Bollywood celebrity photos from the internet to build the CNN training dataset, or upload your own images below.</p>
+                
+                <!-- Celebrity Cards Grid -->
+                <div class="player-cards">
+                    <!-- Salman Khan -->
+                    <div class="player-card salman-card">
+                        <div class="card-glow"></div>
+                        <div class="jersey-num">01</div>
+                        <div class="player-details">
+                            <h3>Salman Khan</h3>
+                            <span class="player-pos">The Megastar</span>
+                            <div class="image-count">
+                                <i class="fa-regular fa-image"></i> <span id="count-salman_khan">0</span> images
+                            </div>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <label class="btn-upload" for="upload-salman_khan">
+                                <i class="fa-solid fa-plus"></i> Add celebrity photo
+                            </label>
+                            <input type="file" id="upload-salman_khan" accept="image/*" class="train-upload-input" data-player="salman_khan">
+                        </div>
+                    </div>
+
+                    <!-- Shah Rukh Khan -->
+                    <div class="player-card srk-card">
+                        <div class="card-glow"></div>
+                        <div class="jersey-num">02</div>
+                        <div class="player-details">
+                            <h3>Shah Rukh Khan</h3>
+                            <span class="player-pos">The King of Romance</span>
+                            <div class="image-count">
+                                <i class="fa-regular fa-image"></i> <span id="count-shah_rukh_khan">0</span> images
+                            </div>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <label class="btn-upload" for="upload-shah_rukh_khan">
+                                <i class="fa-solid fa-plus"></i> Add celebrity photo
+                            </label>
+                            <input type="file" id="upload-shah_rukh_khan" accept="image/*" class="train-upload-input" data-player="shah_rukh_khan">
+                        </div>
+                    </div>
+
+                    <!-- Bobby Deol -->
+                    <div class="player-card bobby-card">
+                        <div class="card-glow"></div>
+                        <div class="jersey-num">03</div>
+                        <div class="player-details">
+                            <h3>Bobby Deol</h3>
+                            <span class="player-pos">The Action Star</span>
+                            <div class="image-count">
+                                <i class="fa-regular fa-image"></i> <span id="count-bobby_deol">0</span> images
+                            </div>
+                        </div>
+                        <div class="upload-btn-wrapper">
+                            <label class="btn-upload" for="upload-bobby_deol">
+                                <i class="fa-solid fa-plus"></i> Add celebrity photo
+                            </label>
+                            <input type="file" id="upload-bobby_deol" accept="image/*" class="train-upload-input" data-player="bobby_deol">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Parameters -->
+                <div class="hyperparams-section">
+                    <h3><i class="fa-solid fa-sliders icon-gold"></i> Training Settings</h3>
+                    <div class="params-row">
+                        <div class="param-group">
+                            <label for="epochs">Epochs</label>
+                            <input type="number" id="epochs" value="10" min="1" max="100">
+                        </div>
+                        <div class="param-group">
+                            <label for="batch_size">Batch Size</label>
+                            <input type="number" id="batch_size" value="4" min="1" max="32">
+                        </div>
+                        <div class="param-group">
+                            <label for="lr">Learning Rate</label>
+                            <select id="lr">
+                                <option value="0.01">0.01 (Fast)</option>
+                                <option value="0.001" selected>0.001 (Recommended)</option>
+                                <option value="0.0001">0.0001 (Slow)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-block" id="btn-train-model">
+                        <i class="fa-solid fa-gears"></i> Train Convolutional Neural Network
+                    </button>
+                </div>
+            </section>
+
+            <!-- Middle Panel: Live Training Dashboard -->
+            <section class="middle-panel dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-chart-line icon-red"></i> Training Progress</h2>
+                </div>
+                
+                <!-- Training Console / Status -->
+                <div id="training-console" class="training-console inactive">
+                    <div class="status-indicator">
+                        <span class="status-pulse" id="status-pulse-dot"></span>
+                        <span id="training-status-text">Status: Idle</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="training-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="metrics-summary">
+                        <div class="metric-box">
+                            <span class="metric-label">Epoch</span>
+                            <span class="metric-val" id="metric-epoch">-</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Loss</span>
+                            <span class="metric-val" id="metric-loss">-</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Accuracy</span>
+                            <span class="metric-val" id="metric-accuracy">-</span>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Val Acc</span>
+                            <span class="metric-val" id="metric-val-acc">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="chart-container">
+                    <canvas id="trainingChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Right Panel: Inference Playground & Activation Maps -->
+            <section class="right-panel dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-wand-magic-sparkles icon-gold"></i> Inference Sandbox</h2>
+                </div>
+                <p class="section-desc">Import a test image of a Bollywood celebrity (drag & drop, upload, or paste URL) to classify it using the CNN and view convolutional feature maps.</p>
+                
+                <div class="inference-sandbox">
+                    <!-- Drop Zone -->
+                    <div class="drop-zone" id="drop-zone">
+                        <i class="fa-solid fa-images drop-icon"></i>
+                        <p>Drag & Drop celebrity image here, or <span>browse</span></p>
+                        <input type="file" id="test-image-upload" accept="image/*" style="display: none;">
+                        <img id="preview-img" class="preview-img" alt="Test Image Preview">
+                    </div>
+                    
+                    <!-- URL Import -->
+                    <div class="url-input-row">
+                        <input type="text" id="test-image-url" placeholder="Or paste a celebrity image URL...">
+                        <button class="btn btn-secondary" id="btn-load-url">Load URL</button>
+                    </div>
+
+                    <!-- Predictions result -->
+                    <div class="prediction-results" id="prediction-results">
+                        <h3>Inference Predictions</h3>
+                        <div id="results-list">
+                            <p class="placeholder-text">Please upload or import a celebrity image to see predictions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Activation Maps (First Conv Layer) -->
+                    <div class="activation-maps-section" id="activation-maps-section">
+                        <h3><i class="fa-solid fa-eye icon-blue"></i> First Layer Conv Activations (Feature Maps)</h3>
+                        <p class="section-desc">Visualization of the 16 feature maps from the first convolutional layer (conv2d_1) showing how the CNN extracts shapes, textures, and borders.</p>
+                        <div class="activation-grid" id="activation-grid">
+                            <!-- JS will load images here -->
+                            <div class="placeholder-maps">
+                                <i class="fa-solid fa-microscope"></i>
+                                <p>Feature maps will display here after successful prediction.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Més que un club. Powered by TensorFlow & Python FastAPI. Created for Bollywood Celebrity Classifier.</p>
+        </footer>
+    </div>
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
